@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <script>
+    function baz() {
+	    console.log("baz")
+      bar()
+    }
+		function bar() {
+			console.log("bar")
+      foo()
+		}
+		function foo() {
+			console.log("foo")
+    }
+		baz()
+
+    var a = 100; // var 改为 let就会返回undefind ,这是因为let声明的变量不会挂到window上
+		function getA() {
+			console.log("getA",this.a)
+		}
+		getA()
+  </script>
+</body>
+</html>
