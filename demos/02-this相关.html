@@ -5,25 +5,60 @@
   <title>Title</title>
 </head>
 <body>
-  <script>
-    function baz() {
-	    console.log("baz")
-      bar()
-    }
-		function bar() {
-			console.log("bar")
-      foo()
-		}
-		function foo() {
-			console.log("foo")
-    }
-		baz()
+<script>
+	var a = 100; // var 改为 let就会返回undefind ,这是因为let声明的变量不会挂到window上
+	function getA() {
+		console.log("getA", this.a)
+	}
 
-    var a = 100; // var 改为 let就会返回undefind ,这是因为let声明的变量不会挂到window上
-		function getA() {
-			console.log("getA",this.a)
-		}
-		getA()
-  </script>
+	getA()
+
+	/**
+	 * 软绑定的实例
+	 */
+	if (!Function.prototype.softBind) {
+		Function.prototype.softBind = function (obj) {
+			var fn = this;
+			// 捕获所有 curried 参数
+      // 之前提到的使用call，apply和bind实现的函数柯里化
+      // 基本含义就是一个数组的对象，调用slice方法，同时通过call将类数组arguments绑定给slice，后续的1是传给slice的参数
+			var curried = [].slice.call(arguments, 1); // 等同于 [...arguments].slice(1)
+			var bound = function () {
+				// curried 是最外层函数传入的参数，arguments是里面的函数传入的参数
+				var actualThis = (!this || this === (window || global)) ? obj : this;
+				// 合并 presetArgs 和 实际调用时的参数
+				var args = curried.concat(Array.prototype.slice.call(arguments));
+				return fn.apply(actualThis, args);
+			};
+			bound.prototype = Object.create(fn.prototype); // 类似bind的用法
+			return bound;
+		};
+	}
+
+	function foo() {
+		console.log("name: " + this.name);
+	}
+
+	var obj = {name: "obj"},
+			obj2 = {name: "obj2"},
+			obj3 = {name: "obj3"};
+	var fooOBJ = foo.softBind(obj);
+	fooOBJ(); // name: obj
+	obj2.foo = foo.softBind(obj);
+	obj2.foo(); // name: obj2 <---- 看！！！
+	fooOBJ.call(obj3); // name: obj3 <---- 看！
+	setTimeout(obj2.foo, 10);
+	// name: obj <---- 应用了软绑定
+
+  function testArgs(temp,temp1) {
+	  console.log('输出的temp', temp,temp1,'输出name',this.name);
+  }
+	let useTestArgs = testArgs.softBind(obj,'绑定时传入的值')
+  useTestArgs('传入的temp');
+	// 通过softBind实现柯里化
+  let str = '我是传入的参数2'
+	useTestArgs(str);
+
+</script>
 </body>
 </html>

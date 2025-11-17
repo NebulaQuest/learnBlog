@@ -201,6 +201,36 @@
     console.log( obj1.a ); // 2
     console.log( bar.a ); // 4
 ```
+### 被忽略的this
+
+- 如果把 null 或者 undefined 作为 this 的绑定对象传入 call、apply 或者 bind，这些值
+  在调用时会被忽略，实际应用的是默认绑定规则
+
+### 硬绑定
+
+- 对于除了使用ES6的函数柯里化之外，可以使用apply 或者 bind来实现柯里化的过程
+- 使用apply或者bind的时候我们一定会给方法里面传入this的指向，所以我们需要一个更加安全的创建空this的方法
+- `Object.create(null)`
+
+```javascript
+    function foo(a,b) {
+	console.log( "a:" + a + ", b:" + b );
+    }
+    // 我们的 DMZ 空对象
+    var ø = Object.create( null );
+    // 把数组展开成参数
+    foo.apply( ø, [2, 3] ); // a:2, b:3
+    // 使用 bind(..) 进行柯里化
+    var bar = foo.bind( ø, 2 );
+    bar( 3 ); // a:2, b:3
+```
+
+### 软绑定
+
+- 软绑定比硬绑定更加灵活，软绑定可以通过隐式绑定或者显示绑定来对this的指向进行修改，但是使用硬绑定之后就无法修改this的指向了
+- 软绑定的基本原理就是创建一个默认的this指向
+
+软绑定的实例
 
 // TODO 对于new的过程还不了解，没有手写apply，call和bind，没有练习更多的this指向的练习 看到111
 
