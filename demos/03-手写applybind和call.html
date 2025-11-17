@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+	Function.prototype.myCall = function (context, ...args) {
+		context = context || globalThis; // 处理 null / undefined
+		const fnKey = Symbol();          // 避免属性冲突
+		context[fnKey] = this;           // this 指向当前函数
+
+		const result = context[fnKey](...args); // 执行
+		delete context[fnKey];           // 清理
+
+		return result;
+	};
+
+	Function.prototype.myApply = function (context, args) {
+		context = context || globalThis;
+		const fnKey = Symbol();
+		context[fnKey] = this;
+
+		const result = args ? context[fnKey](...args) : context[fnKey]();
+
+		delete context[fnKey];
+		return result;
+	};
+
+	Function.prototype.myBind = function (context, ...bindArgs) {
+		const self = this;
+
+		function boundFn(...callArgs) {
+			// 如果通过 new 调用，this 应该指向实例
+			if (this instanceof boundFn) {
+				return new self(...bindArgs, ...callArgs);
+			}
+			return self.apply(context, [...bindArgs, ...callArgs]);
+		}
+
+		// 继承原函数原型（可选）
+		if (self.prototype) {
+			boundFn.prototype = Object.create(self.prototype);
+		}
+
+		return boundFn;
+	};
+</script>
+</body>
+</html>
