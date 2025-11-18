@@ -187,7 +187,7 @@
 
     // 隐式绑定和new
     function foo(something) {
-        this.a = something;
+        this.a = something;  
     }
     var obj1 = {
         foo: foo
@@ -232,5 +232,10 @@
 
 [软绑定的实例](../demos/02-this相关.html)
 
-// TODO 对于new的过程还不了解，没有手写apply，call和bind，没有练习更多的this指向的练习 看到114
+### 箭头函数
+
+注意箭头函数中的this只和创建箭头函数的时候的外层作用域有关系，和其他的都没关系
+
+// TODO 对于new的过程还不了解，
+// 没有手写apply，call和bind，学完原型和原型链之后再返回来倒推
 

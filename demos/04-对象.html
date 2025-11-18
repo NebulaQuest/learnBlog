@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>对象</title>
+</head>
+<body>
+<script>
+	var myObject = {
+		a:2
+	};
+	let res = Object.getOwnPropertyDescriptor( myObject, "a" );
+	console.log(res)
+  /**
+   * value = 2
+   * writable = true
+   * enumerable = true
+   * configurable = true
+   */
+  var myObject1 = {};
+	Object.defineProperty( myObject1, "a", {
+		value: 2,
+		writable: true,
+		configurable: true,
+		enumerable: true
+	} );
+	console.log(myObject1.a);
+
+</script>
+</body>
+</html>
