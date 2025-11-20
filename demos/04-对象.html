@@ -26,6 +26,18 @@
 	} );
 	console.log(myObject1.a);
 
+	var myObject2 = {
+		// 给 a 定义一个 getter
+		get a() {
+			return this._a_;
+		},
+		// 给 a 定义一个 setter
+		set a(val) {
+			this._a_ = val * 2;
+		}
+	};
+	myObject2.a = 2;
+	console.log(	myObject2.a)
 </script>
 </body>
 </html>

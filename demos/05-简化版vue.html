@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+	class Vue {
+		constructor(options) {
+			this._data = options.data;
+
+			this.observe(this._data);
+		}
+
+		observe(obj) {
+			console.log(Object.keys(obj))
+			Object.keys(obj).forEach(key => {
+				this.defineReactive(obj, key);
+			});
+		}
+
+		defineReactive(obj, key) {
+			let value = obj[key];
+
+			Object.defineProperty(obj, key, {
+				get: () => {
+					console.log('收集依赖');
+					return value;
+				},
+				set: (newVal) => {
+					if (newVal === value) return;
+					value = newVal;
+					console.log('通知更新');
+				}
+			});
+		}
+	}
+
+	const data = { message: 'Hello' };
+	let app = new Vue({data})
+
+	console.log(app._data.message)
+	app._data.message = '122'
+	console.log(app._data.message)
+</script>
+</body>
+</html>
