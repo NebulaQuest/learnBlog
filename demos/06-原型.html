@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script>
+	var anotherObject = {
+		a: 2
+	};
+	// 创建一个关联到 anotherObject 的对象
+	var myObject = Object.create(anotherObject);
+	for (var k in myObject) {
+		console.log("found: " + k);
+	}
+	// found: a
+	console.log("a" in myObject); // true
+
+	function NothingSpecial() {
+		this.aa = 1
+		console.log( "Don't mind me!" );
+	}
+	var a = new NothingSpecial();
+	// "Don't mind me!"
+	console.log(a); // {}
+</script>
+
+</body>
+</html>
