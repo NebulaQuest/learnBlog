@@ -24,6 +24,18 @@
 	var a = new NothingSpecial();
 	// "Don't mind me!"
 	console.log(a); // {}
+
+
+  var obj1 = {
+		a: 1,
+    b: 2,
+    fun: function(){
+	    console.log( "Don't mind me!" );
+    }
+  }
+	var obj2 = Object.create(obj1);
+	obj2.a = 3;
+	console.log(obj2.__proto__)
 </script>
 
 </body>
